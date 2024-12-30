@@ -52,6 +52,7 @@ async fn run_loop(enigo: &mut Enigo, mut rx: mpsc::Receiver<()>) -> anyhow::Resu
     }
     // Count for how many times the mouse has moved
     let mut count = 1u64;
+    // Loop
     loop {
         // Print the time, count and interval
         println!(
