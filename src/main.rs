@@ -3,14 +3,14 @@ use std::time::Duration;
 use config_fly::CONFIG;
 use enigo::{Coordinate, Enigo, Mouse, Settings};
 use log::info;
-use rustlib::log_fly;
+// use rustlib::log_fly;
 pub mod config_fly;
 use tokio::{self, select, sync::mpsc::channel, time::sleep};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() {
     // Initialize logger
-    log_fly::log_init();
+    // log_fly::log_init();
     // Get interval from config
     let interval = CONFIG.interval;
     // Setup Ctrl-C handler
