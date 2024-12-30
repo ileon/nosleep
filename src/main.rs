@@ -26,7 +26,7 @@ async fn main() {
     let mut count = 1u64;
     loop {
         // Print the count
-        println!("The {}-th time move. Press CTRL+C to exit this program", count);
+        println!("{} ~ The {}-th time move. Press CTRL+C to exit this program.", chrono::Local::now().format("%Y-%m-%d %H:%M:%S"),count);
         count += 1;
         // Move mouse
         enigo.move_mouse(1, 1, Coordinate::Rel).unwrap();

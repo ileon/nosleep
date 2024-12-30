@@ -6,6 +6,7 @@ version = 4
 name = "Nosleep"
 version = "0.1.0"
 dependencies = [
+ "chrono",
  "config",
  "ctrlc2",
  "enigo",
