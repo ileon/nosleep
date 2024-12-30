@@ -23,7 +23,11 @@ async fn main() {
     .await;
     // Setup Enigo
     let mut enigo = Enigo::new(&Settings::default()).unwrap();
+    let mut count = 1u64;
     loop {
+        // Print the count
+        println!("The {}-th time move. Press CTRL+C to exit this program", count);
+        count += 1;
         // Move mouse
         enigo.move_mouse(1, 1, Coordinate::Rel).unwrap();
         // Wait for a while
