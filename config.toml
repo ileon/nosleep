@@ -1,0 +1,2 @@
+#move mouse interval, the unit is second
+interval = 60 #seconds
