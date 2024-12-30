@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
+anyhow = "1.0.95"
 chrono = "0.4.39"
 config = "0.15.4"
 ctrlc2 = {version="3.5.9",features=["tokio"]}
