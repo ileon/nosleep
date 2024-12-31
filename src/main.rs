@@ -8,7 +8,6 @@ pub mod config_fly;
 use tokio::{
     self, select,
     sync::mpsc::{self, channel},
-    time::sleep,
 };
 
 #[tokio::main(flavor = "current_thread")]
@@ -52,6 +51,10 @@ async fn run_loop(enigo: &mut Enigo, mut rx: mpsc::Receiver<()>) -> anyhow::Resu
     if loop_interval.period().is_zero() {
         return Err(anyhow::anyhow!("The interval can not be 0 in config.toml"));
     }
+    //set move mouse interval, 10ms
+    let mut move_mouse_interval = interval(Duration::from_millis(10));
+    //interval的第一次会立即返回，所以在loop前先执行一次
+    move_mouse_interval.tick().await;
     // Count for how many times the mouse has moved
     let mut count = 1u64;
     // Loop
@@ -69,7 +72,7 @@ async fn run_loop(enigo: &mut Enigo, mut rx: mpsc::Receiver<()>) -> anyhow::Resu
         // Move mouse
         enigo.move_mouse(1, 1, Coordinate::Rel).unwrap();
         // Wait for a while
-        sleep(Duration::from_millis(10)).await;
+        move_mouse_interval.tick().await;
         // Move mouse back
         enigo.move_mouse(-1, -1, Coordinate::Rel).unwrap();
 
