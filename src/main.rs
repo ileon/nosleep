@@ -47,6 +47,7 @@ async fn run_loop(enigo: &mut Enigo, mut rx: mpsc::Receiver<()>) -> anyhow::Resu
     let mut exit_after = interval(Duration::from_secs(CONFIG.exit_after * 60));
     exit_after.tick().await;
     println!("This program will exit after {} minutes", CONFIG.exit_after);
+
     // Get interval from config
     let mut loop_interval = interval(Duration::from_secs(CONFIG.move_interval));
     //interval的第一次会立即返回，所以在loop前先执行一次
@@ -65,9 +66,9 @@ async fn run_loop(enigo: &mut Enigo, mut rx: mpsc::Receiver<()>) -> anyhow::Resu
     loop {
         // Print the time, count and interval
         println!(
-            "{} --> The {}-th time move. Every {} seconds. Press CTRL+C to exit this program.",
-            chrono::Local::now().format("%Y-%m-%d %H:%M:%S"),
+            "({}) [{}] Occurs every {} seconds. Press CTRL+C to exit this program.",
             count,
+            chrono::Local::now().format("%Y-%m-%d %H:%M:%S"),
             loop_interval.period().as_secs()
         );
         // Increase the count

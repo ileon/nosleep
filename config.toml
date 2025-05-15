@@ -1,7 +1,7 @@
 #move mouse interval, the unit is second
-move_interval = 30 #seconds
+move_interval = 10 #seconds
 #exit this program after this time, the unit is minute
-exit_after = 12 #minutes
+exit_after = 2 #minutes
 #move mouse pixels in x and y direction
 x_move = 10 #pixels
 y_move = 10 #pixels
