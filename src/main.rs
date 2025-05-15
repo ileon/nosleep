@@ -1,4 +1,4 @@
-use tokio::time::{interval, Duration};
+use tokio::time::{Duration, interval};
 
 use config_fly::CONFIG;
 use enigo::{Coordinate, Enigo, Mouse, Settings};
@@ -43,8 +43,12 @@ async fn main() {
 
 /// Run the loop
 async fn run_loop(enigo: &mut Enigo, mut rx: mpsc::Receiver<()>) -> anyhow::Result<()> {
+    //exit after config minutes
+    let mut exit_after = interval(Duration::from_secs(CONFIG.exit_after * 60));
+    exit_after.tick().await;
+    println!("This program will exit after {} minutes", CONFIG.exit_after);
     // Get interval from config
-    let mut loop_interval = interval(Duration::from_secs(CONFIG.interval));
+    let mut loop_interval = interval(Duration::from_secs(CONFIG.move_interval));
     //interval的第一次会立即返回，所以在loop前先执行一次
     loop_interval.tick().await;
     // Check if interval is 0
@@ -52,9 +56,9 @@ async fn run_loop(enigo: &mut Enigo, mut rx: mpsc::Receiver<()>) -> anyhow::Resu
         return Err(anyhow::anyhow!("The interval can not be 0 in config.toml"));
     }
     //set move mouse interval, 10ms
-    let mut move_mouse_interval = interval(Duration::from_millis(10));
+    let mut move_mouse_delay = interval(Duration::from_millis(50));
     //interval的第一次会立即返回，所以在loop前先执行一次
-    move_mouse_interval.tick().await;
+    move_mouse_delay.tick().await;
     // Count for how many times the mouse has moved
     let mut count = 1u64;
     // Loop
@@ -70,11 +74,15 @@ async fn run_loop(enigo: &mut Enigo, mut rx: mpsc::Receiver<()>) -> anyhow::Resu
         count += 1;
 
         // Move mouse
-        enigo.move_mouse(1, 1, Coordinate::Rel).unwrap();
+        enigo
+            .move_mouse(CONFIG.x_move, CONFIG.y_move, Coordinate::Rel)
+            .unwrap();
         // Wait for a while
-        move_mouse_interval.tick().await;
+        move_mouse_delay.tick().await;
         // Move mouse back
-        enigo.move_mouse(-1, -1, Coordinate::Rel).unwrap();
+        enigo
+            .move_mouse(-CONFIG.x_move, -CONFIG.y_move, Coordinate::Rel)
+            .unwrap();
 
         // Check if Ctrl-C was pressed
         select! {
@@ -83,6 +91,10 @@ async fn run_loop(enigo: &mut Enigo, mut rx: mpsc::Receiver<()>) -> anyhow::Resu
             // Check if Ctrl-C was pressed
             _=rx.recv()=>{
                 println!("Ctrl-C pressed, exiting...");
+                break;
+            }
+            _=exit_after.tick() => {
+                println!("Exiting after {} minutes", CONFIG.exit_after);
                 break;
             }
         }

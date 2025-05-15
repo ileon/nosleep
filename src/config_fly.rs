@@ -23,5 +23,8 @@ fn config_init() -> MyConfig {
 
 #[derive(Debug, Deserialize)]
 pub struct MyConfig {
-    pub interval: u64,
+    pub move_interval: u64,
+    pub exit_after:u64,
+    pub x_move:i32,
+    pub y_move:i32,
 }

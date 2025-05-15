@@ -1,15 +1,15 @@
 [package]
 name = "Nosleep"
-version = "0.1.0"
-edition = "2021"
+version = "0.2.0"
+edition = "2024"
 
 [dependencies]
-anyhow = "1.0.95"
-chrono = "0.4.39"
-config = "0.15.4"
-ctrlc2 = {version="3.5.9",features=["tokio"]}
+anyhow = "1.0.98"
+chrono = "0.4.41"
+config = "0.15.11"
+ctrlc2 = {version="3.6.1",features=["tokio"]}
 enigo = "0.3.0"
-log = "0.4.22"
+log = "0.4.27"
 rustlib = { path = "../rustlib" }
-serde = "1.0.217"
-tokio = { version = "1.42.0", features = ["full"] }
+serde = "1.0.219"
+tokio = { version = "1.45.0", features = ["full"] }
